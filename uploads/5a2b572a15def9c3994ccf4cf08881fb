@@ -1,0 +1,9 @@
+
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .text { font: bold 28px 'Poppins', sans-serif; fill: #374151; }
+    .icon { fill: #A2C9F5; }
+  </style>
+  <circle class="icon" cx="25" cy="30" r="15"/>
+  <text class="text" x="50" y="38">serenly</text>
+</svg>

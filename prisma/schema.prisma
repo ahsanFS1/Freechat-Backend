@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String         @id @default(uuid())
+  username       String         @unique
+  email          String         @unique
+  password       String
+  bio            String?
+  avatarUrl      String?
+  createdAt      DateTime       @default(now())
+  name           String?
+  comments       Comment[]
+  conversations1 Conversation[] @relation("User1")
+  conversations2 Conversation[] @relation("User2")
+  followers      Follower[]     @relation("Following")
+  following      Follower[]     @relation("FollowedBy")
+  likes          Like[]
+  sentMessages   Message[]      @relation("SentMessages")
+  posts          Post[]
+}
+
+model Post {
+  id        String    @id @default(uuid())
+  caption   String?
+  imageUrl  String
+  createdAt DateTime  @default(now())
+  userId    String
+  comments  Comment[]
+  likes     Like[]
+  user      User      @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+  userId    String
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  userId    String
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, postId])
+}
+
+model Follower {
+  id          String   @id @default(uuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  follower    User     @relation("Following", fields: [followerId], references: [id])
+  following   User     @relation("FollowedBy", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
+}
+
+model Conversation {
+  id        String    @id @default(uuid())
+  user1Id   String
+  user2Id   String
+  createdAt DateTime  @default(now())
+  user1     User      @relation("User1", fields: [user1Id], references: [id])
+  user2     User      @relation("User2", fields: [user2Id], references: [id])
+  messages  Message[]
+
+  @@unique([user1Id, user2Id])
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  content        String
+  sentAt         DateTime     @default(now())
+  conversationId String
+  senderId       String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  sender         User         @relation("SentMessages", fields: [senderId], references: [id])
+}
