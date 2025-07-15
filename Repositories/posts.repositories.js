@@ -69,9 +69,31 @@ async function getPostsByUserId({ userId }) {
   });
 }
 
+async function deletePostByPostId({ postId }) {
+  return await prisma.$transaction(async (tx) => {
+    await tx.like.deleteMany({
+      where: {
+        postId: postId,
+      },
+    });
+
+    await tx.comment.deleteMany({
+      where: {
+        postId: postId,
+      },
+    });
+
+    return await tx.post.delete({
+      where: {
+        id: postId,
+      },
+    });
+  });
+}
 module.exports = {
   uploadPostsByUserId,
   updatePostsByUserId,
   getPostsByUserId,
   getRecentPosts,
+  deletePostByPostId,
 };

@@ -87,6 +87,7 @@ async function updateUserService({ id, ...data }) {
 async function getUserProfileByUsernameService(username) {
   const profile = await getUserProfileByUsername(username);
   if (!profile) {
+    console.log("ERROR IN USER PROFILE");
     const err = new Error("User not found");
     err.status = 404;
     throw err;

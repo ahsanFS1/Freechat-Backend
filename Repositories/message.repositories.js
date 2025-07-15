@@ -11,7 +11,7 @@ async function createMessageRepo({ conversationId, senderId, content }) {
 }
 
 async function getConversationsRepo(userId) {
-  console.log("here");
+  
   return await prisma.conversation.findMany({
     where: {
       OR: [{ user1Id: userId }, { user2Id: userId }],

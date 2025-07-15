@@ -11,7 +11,6 @@ async function createMessage(req, res) {
 
 async function getConversations(req, res) {
   try {
-    console.log("here")
     const conversations = await getConversationsService(req.params.userId);
     res.json(conversations);
   } catch (err) {
@@ -38,7 +37,6 @@ const getConversationById = async (req, res) => {
   try {
     const conversation = await getConversationWithMessages(conversationId);
     res.json(conversation);
-    console.log("converations: ",conversation)
   } catch (err) {
     console.error("Error fetching full conversation:", err);
     res.status(500).send("Failed to get conversation");

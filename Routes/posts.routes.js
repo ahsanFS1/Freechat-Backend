@@ -4,6 +4,7 @@ const {
   updatePost,
   getPosts,
   getRecentPostsHandler,
+  deletePost,
 } = require("../Controllers/posts.controller");
 
 const multer = require("multer");
@@ -33,6 +34,8 @@ router.put("/update/:postId", validate(postUpdateSchema), updatePost);
 router.get("/get-posts/:userId", validate(userIdParamSchema), getPosts);
 
 router.get("/recent-posts", getRecentPostsHandler);
+
+router.delete("/delete/:postId", deletePost);
 
 router.post("/upload", upload.single("image"), async (req, res) => {
   try {

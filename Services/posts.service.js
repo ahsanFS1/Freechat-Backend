@@ -3,6 +3,7 @@ const {
   updatePostsByUserId,
   getPostsByUserId,
   getRecentPosts,
+  deletePostByPostId,
 } = require("../Repositories/posts.repositories");
 
 async function uploadPostService({ userId, imageUrl, caption }) {
@@ -20,9 +21,14 @@ async function getPostsService({ userId }) {
   return await getPostsByUserId({ userId });
 }
 
+async function deletePostByPostIdService({ postId }) {
+  return await deletePostByPostId({ postId });
+}
+
 module.exports = {
   uploadPostService,
   updatePostService,
   getPostsService,
   fetchRecentPosts,
+  deletePostByPostIdService,
 };

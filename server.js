@@ -12,11 +12,10 @@ const likeRoutes = require("./Routes/likes.routes");
 const messageRoutes = require("./Routes/message.routes.js");
 const { setupMessageSocket } = require("./Sockets/message.socket.js");
 
-
 const allowedOrigins = [
   "http://localhost:5173",
+  "https://freechat-frontend.vercel.app"
 ];
-
 
 app.use(cors({
   origin: allowedOrigins,
@@ -24,11 +23,10 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST"]
   }
 });
 
@@ -39,10 +37,10 @@ app.use("/api/posts", postRoutes);
 app.use("/api/posts", likeRoutes);
 app.use("/api", messageRoutes);
 
-
-
 setupMessageSocket(io);
 
-server.listen(3000, "0.0.0.0", () => {
-  console.log("Server running at http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+
+server.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });

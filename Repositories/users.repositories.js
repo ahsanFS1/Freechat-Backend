@@ -115,6 +115,7 @@ async function updateUserById(id, data) {
   });
 }
 async function getUserProfileByUsername(username) {
+
   const user = await prisma.user.findUnique({
     where: { username },
     select: {
@@ -125,7 +126,6 @@ async function getUserProfileByUsername(username) {
       bio: true,
     },
   });
-
   if (!user) return null;
 
   const followers = await getFollowersForUserId({ userId: user.id });

@@ -1,5 +1,5 @@
 const express = require("express");
-const { uploadPostService,updatePostService,getPostsService,fetchRecentPosts} = require("../Services/posts.service");
+const { uploadPostService,updatePostService,getPostsService,fetchRecentPosts,deletePostByPostIdService} = require("../Services/posts.service");
 
 async function uploadPost(req, res) {
   const { imageUrl } = req.body;
@@ -12,7 +12,6 @@ async function uploadPost(req, res) {
     return res.status(401).json("Image could not be uploaded");
   }
 }
-
 async function updatePost(req,res){
     const {postId} = req.params
     const{caption} = req.body
@@ -23,7 +22,7 @@ async function updatePost(req,res){
         return res.status(201).json(post);
 
     }catch(err){
-        return res.status(401).json("Image could not be updated")
+        return res.status(401).json ("Image could not be updated")
     }
 }
 
@@ -54,9 +53,22 @@ async function getRecentPostsHandler(req, res) {
     res.status(500).json({ error: "Failed to fetch posts" });
   }
 }
+
+async function deletePost(req,res){
+
+  const { postId } = req.params;
+
+  try {
+    const post = await deletePostByPostIdService({ postId });
+    return res.status(200).json(post);
+  } catch (err) {
+    return res.status(404).json(err.message);
+  }
+}
 module.exports = {
   uploadPost,
   updatePost,
   getPosts,
-  getRecentPostsHandler
+  getRecentPostsHandler,
+  deletePost,
 };
