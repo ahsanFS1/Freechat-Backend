@@ -36,6 +36,9 @@ app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/posts", likeRoutes);
 app.use("/api", messageRoutes);
+app.get("/", (req, res) => {
+  res.send("Backend is running");
+});
 
 setupMessageSocket(io);
 
